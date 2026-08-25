@@ -1,0 +1,25 @@
+# Nexus ERP — one-click deploy on Render (https://render.com)
+#
+# After pushing this file to GitHub:
+#   1. Go to https://dashboard.render.com/blueprints -> "New Blueprint Instance"
+#   2. Pick your repository (mohamegomaa-create/Office-Tool-docs)
+#   3. Render reads this file and creates the web service automatically.
+#
+# The service runs from the erp/ subdirectory: it installs the client,
+# builds the React bundle, installs the server, and starts Express on $PORT.
+
+services:
+  - type: web
+    name: nexus-erp
+    runtime: node
+    rootDir: erp
+    plan: free
+    buildCommand: bash render-build.sh
+    startCommand: node server/index.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 22.0.0
+      - key: JWT_SECRET
+        generateValue: true

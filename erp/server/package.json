@@ -1,0 +1,19 @@
+{
+  "name": "nexus-erp-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nexus ERP backend (Express + SQLite)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pdfkit": "^0.20.1"
+  }
+}
