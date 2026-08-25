@@ -6,3 +6,6 @@ node_modules
 /docs/.vitepress/cache/
 /docs/useterms/*
 /docs/*/useterms/*
+# ERP app
+erp/data/
+erp/client/dist/
