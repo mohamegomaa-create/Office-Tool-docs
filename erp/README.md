@@ -136,6 +136,52 @@ All `/api/*` routes (except `/api/auth/login`) require a `Authorization: Bearer 
 | `PORT`               | `4000`                   | HTTP port for the combined server |
 | `JWT_SECRET`         | `erp-dev-secret-change-me` | Signing secret for JWTs — **change this in production** |
 
+## Deployment (get the site online)
+
+The repo already includes everything needed to deploy. The server serves the
+built React UI and the API on one port, so it runs anywhere Node is available.
+
+### Option A — Render (easiest, free tier)
+
+1. Push the code to GitHub.
+2. Go to **https://dashboard.render.com/blueprints** → **New Blueprint Instance**.
+3. Select your repository. `render.yaml` configures the service automatically
+   (builds the client, starts the server, health-checks `/api/health`).
+4. Set the `JWT_SECRET` env var (Render can auto-generate it) and click **Apply**.
+
+### Option B — Railway / Fly.io / any Node host
+
+- Build command: `bash render-build.sh`
+- Start command: `node server/index.js`
+- Set the environment variable `JWT_SECRET` to a long random string.
+- The root directory is `erp/`.
+
+### Option C — Docker
+
+```bash
+cd erp
+docker build -t nexus-erp .
+docker run -p 4000:4000 -v nexus-erp-data:/app/data nexus-erp
+```
+
+Open http://localhost:4000. Mount a volume to `/app/data` to keep the SQLite
+database across container restarts.
+
+### Option D — Your own VPS
+
+```bash
+git clone https://github.com/mohamegomaa-create/Office-Tool-docs.git
+cd Office-Tool-docs/erp
+cd server && npm install --omit=dev && cd ..
+cd client && npm install && npm run build && cd ..
+JWT_SECRET=$(openssl rand -hex 32) PORT=4000 node server/index.js
+```
+
+> ⚠️ **Note:** GitHub Pages cannot host this app because it is a Node server
+> (Pages serves only static files). Use one of the options above.
+> On the free tier, Render/Railway may sleep and reset its disk — for production,
+> attach persistent storage or migrate to Postgres later.
+
 ## Notes & Next Steps
 
 - The database file lives at `erp/data/erp.db`. Delete it to re-seed from scratch.
